@@ -36,6 +36,11 @@ INSERT INTO rooms (room_number, room_type) VALUES
     ('012', 'PREMIUM'),
     ('013', 'PREMIUM');
 
+INSERT INTO employees (first_name, last_name, employee_login, employee_access_code, is_admin) values
+    ('John', 'Smith', 'jsmith', '1234', 1),
+    ('Adam', 'Smith', 'asmith', '5678', 0);
+
+
 
 
 

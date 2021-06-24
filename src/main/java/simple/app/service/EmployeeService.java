@@ -7,6 +7,7 @@ import simple.app.repository.EmployeeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -22,7 +23,11 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeByLogin(String login) {
-        
+        return employeeRepository.findByEmployeeLogin(login);
+    }
+
+    public Optional<Employee> getEmployeeById(Long id) {
+        return employeeRepository.findById(id);
     }
 
     public void addEmployee(Employee employee)

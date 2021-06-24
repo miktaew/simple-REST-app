@@ -7,79 +7,79 @@ public class Employee {
     @Id
     @GeneratedValue
     @Column
-    private long employee_id;
+    private long employeeId;
 
     @Column
-    private String first_name;
+    private String firstName;
 
     @Column
-    private String last_name;
+    private String lastName;
 
     @Column
-    private String employee_login;
+    private String employeeLogin;
 
     @Column
-    private String employee_access_code;
+    private String employeeAccessCode;
 
     @Column
-    private Boolean is_admin;
+    private Boolean isAdmin;
 
     public Employee() {
     }
 
-    public Employee(String first_name, String last_name, String employee_login, String employee_access_code, Boolean is_admin) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.employee_login = employee_login;
-        this.employee_access_code = employee_access_code;
-        this.is_admin = is_admin;
+    public Employee(String firstName, String lastName, String employeeLogin, String employeeAccessCode, Boolean isAdmin) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.employeeLogin = employeeLogin;
+        this.employeeAccessCode = employeeAccessCode;
+        this.isAdmin = isAdmin;
     }
 
-    public long getEmployee_id() {
-        return employee_id;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getEmployee_login() {
-        return employee_login;
+    public String getEmployeeLogin() {
+        return employeeLogin;
     }
 
-    public void setEmployee_login(String employee_login) {
-        this.employee_login = employee_login;
+    public void setEmployeeLogin(String employeeLogin) {
+        this.employeeLogin = employeeLogin;
     }
 
-    public String getEmployee_access_code() {
-        return employee_access_code;
+    public String getEmployeeAccessCode() {
+        return employeeAccessCode;
     }
 
-    public void setEmployee_access_code(String employee_access_code) {
-        this.employee_access_code = employee_access_code;
+    public void setEmployeeAccessCode(String employeeAccessCode) {
+        this.employeeAccessCode = employeeAccessCode;
     }
 
-    public Boolean getIs_admin() {
-        return is_admin;
+    public Boolean getIsAdmin() {
+        return isAdmin;
     }
 
-    public void setIs_admin(Boolean is_admin) {
-        this.is_admin = is_admin;
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }
