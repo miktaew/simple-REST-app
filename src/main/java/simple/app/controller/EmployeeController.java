@@ -1,11 +1,10 @@
 package simple.app.controller;
 
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.server.ResponseStatusException;
+import simple.app.misc.EmployeeNonConfidential;
 import simple.app.model.Employee;
 import simple.app.service.EmployeeService;
 
@@ -20,16 +19,24 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     @ResponseBody
-    private List<Employee> getAllEmployees(@RequestParam String userLogin, @RequestParam String accessCode) {
-        // todo: authorization
-        return employeeService.getAllEmployees();
+    private List<EmployeeNonConfidential> getAllEmployees(@RequestParam String userLogin, @RequestParam String accessCode) {
+        // todo: dont return id, login and access code
+        Employee employee = employeeService.getEmployeeByLogin(userLogin);
+        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode)) {
+            List<EmployeeNonConfidential> result = employeeService.getAllEmployeesNonConfidential();
+            return result;
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/employees/{id}")
     @ResponseBody
     private Employee getEmployee(@RequestParam String userLogin, @RequestParam String accessCode, @PathVariable long id) {
+        // todo: dont return id, login and access code
         Employee employee = employeeService.getEmployeeByLogin(userLogin);
-        if(employee.getEmployeeAccessCode().equals(accessCode)) {
+        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode)) {
             Optional<Employee> result = employeeService.getEmployeeById(id);
             if (result.isPresent()) {
                 return result.get();
@@ -40,14 +47,17 @@ public class EmployeeController {
         else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
-
     }
 
     @RequestMapping(value="/add-employee", method = RequestMethod.POST)
-    public void addEmployee(@RequestBody Employee employee, @RequestBody String userLogin, @RequestBody String accessCode)
+    public void addEmployee(@RequestBody Employee newEmployee, @RequestBody String userLogin, @RequestBody String accessCode)
     {
-        // todo: authorization
-        employeeService.addEmployee(employee);
+        Employee employee = employeeService.getEmployeeByLogin(userLogin);
+        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode) && employee.getIsAdmin()) {
+            employeeService.addEmployee(employee);
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
     }
-
 }

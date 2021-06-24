@@ -2,6 +2,7 @@ package simple.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import simple.app.misc.EmployeeNonConfidential;
 import simple.app.model.Employee;
 import simple.app.repository.EmployeeRepository;
 
@@ -22,6 +23,13 @@ public class EmployeeService {
         return employeeRecords;
     }
 
+    public List<EmployeeNonConfidential> getAllEmployeesNonConfidential()
+    {
+        List<EmployeeNonConfidential> employeeRecords = new ArrayList<>();
+        employeeRepository.getEmployeeNonConfidential().forEach(employeeRecords::add);
+        return employeeRecords;
+    }
+
     public Employee getEmployeeByLogin(String login) {
         return employeeRepository.findByEmployeeLogin(login);
     }
@@ -34,4 +42,5 @@ public class EmployeeService {
     {
         employeeRepository.save(employee);
     }
+
 }
