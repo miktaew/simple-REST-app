@@ -7,12 +7,16 @@ import simple.app.misc.EmployeeNonConfidential;
 import simple.app.model.Employee;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     Employee findByEmployeeLogin(String login);
 
     // gets the non-confidential data of employees (no login or access code)
-    @Query("SELECT e.firstName as firstName, e.lastName as lastName, e.isAdmin as isAdmin FROM Employee e")
+    @Query("SELECT e.employeeId as employeeId, e.firstName as firstName, e.lastName as lastName, e.isAdmin as isAdmin FROM Employee e")
     List<EmployeeNonConfidential> getEmployeeNonConfidential();
+
+    @Query("SELECT e.employeeId as employeeId, e.firstName as firstName, e.lastName as lastName, e.isAdmin as isAdmin FROM Employee e WHERE e.id = ?1")
+    Optional<EmployeeNonConfidential> getEmployeeByIdNonConfidential(Long id);
 }

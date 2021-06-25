@@ -5,9 +5,9 @@ import javax.persistence.*;
 @Table(name="employees")
 public class Employee {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //necessary, other generation types result in error
     @Column
-    private long employeeId;
+    private Long employeeId;
 
     @Column
     private String firstName;
@@ -27,7 +27,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String employeeLogin, String employeeAccessCode, Boolean isAdmin) {
+    public Employee(Long employeeId, String firstName, String lastName, String employeeLogin, String employeeAccessCode, Boolean isAdmin) {
+        this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeLogin = employeeLogin;
@@ -35,11 +36,11 @@ public class Employee {
         this.isAdmin = isAdmin;
     }
 
-    public long getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(long employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 

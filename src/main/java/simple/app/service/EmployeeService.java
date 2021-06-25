@@ -30,6 +30,11 @@ public class EmployeeService {
         return employeeRecords;
     }
 
+    public Optional<EmployeeNonConfidential> getEmployeeByIdNonConfidential(Long id)
+    {
+        return employeeRepository.getEmployeeByIdNonConfidential(id);
+    }
+
     public Employee getEmployeeByLogin(String login) {
         return employeeRepository.findByEmployeeLogin(login);
     }
