@@ -23,12 +23,9 @@ public class EmployeeController {
     @GetMapping("/employees")
     @ResponseBody
     private List<EmployeeNonConfidential> getAllEmployees(@RequestParam String userLogin, @RequestParam String accessCode) {
-        Employee employee = employeeService.getEmployeeByLogin(userLogin);
-        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode)) {
-            List<EmployeeNonConfidential> result = employeeService.getAllEmployeesNonConfidential();
-            return result;
-        }
-        else {
+        if(employeeService.validateAccess(userLogin, accessCode)) {
+            return employeeService.getAllEmployeesNonConfidential();
+        } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }
@@ -37,16 +34,14 @@ public class EmployeeController {
     @GetMapping("/employees/{id}")
     @ResponseBody
     private EmployeeNonConfidential getEmployee(@RequestParam String userLogin, @RequestParam String accessCode, @PathVariable Long id) {
-        Employee employee = employeeService.getEmployeeByLogin(userLogin);
-        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode)) {
+        if(employeeService.validateAccess(userLogin, accessCode)) {
             Optional<EmployeeNonConfidential> result = employeeService.getEmployeeByIdNonConfidential(id);
             if (result.isPresent()) {
                 return result.get();
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
-        }
-        else {
+        } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }
@@ -59,11 +54,10 @@ public class EmployeeController {
 
         if(employeeService.getEmployeeByLogin(newEmployee.getEmployeeLogin()) != null)
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "login already in use");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Login already in use");
         }
 
-        Employee employee = employeeService.getEmployeeByLogin(userLogin);
-        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode) && employee.getIsAdmin()) {
+        if(employeeService.validateAdminAccess(userLogin, accessCode)) {
             employeeService.addEmployee(newEmployee);
         }
         else {

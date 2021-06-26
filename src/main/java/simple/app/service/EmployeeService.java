@@ -26,7 +26,7 @@ public class EmployeeService {
     public List<EmployeeNonConfidential> getAllEmployeesNonConfidential()
     {
         List<EmployeeNonConfidential> employeeRecords = new ArrayList<>();
-        employeeRepository.getEmployeeNonConfidential().forEach(employeeRecords::add);
+        employeeRepository.getEmployeesNonConfidential().forEach(employeeRecords::add);
         return employeeRecords;
     }
 
@@ -48,4 +48,24 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
+    public Boolean validateAccess(String login, String accessCode)
+    {
+        Employee employee = getEmployeeByLogin(login);
+        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public Boolean validateAdminAccess(String login, String accessCode)
+    {
+        Employee employee = getEmployeeByLogin(login);
+        if(employee != null && employee.getEmployeeAccessCode().equals(accessCode) && employee.getIsAdmin())
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

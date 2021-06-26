@@ -41,6 +41,10 @@ INSERT INTO employees (first_name, last_name, employee_login, employee_access_co
     ('Adam', 'Smith', 'asmith', '5678', 0);
 
 
+INSERT INTO clients (first_name, last_name, client_login, client_access_code) values
+    ('John', 'Smith', 'jsmithclient', '1234c'),
+    ('Adam', 'Smith', 'asmithclient', '5678c');
+
 
 
 

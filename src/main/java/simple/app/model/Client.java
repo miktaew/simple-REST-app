@@ -5,59 +5,59 @@ import javax.persistence.*;
 @Table(name="clients")
 public class Client {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //necessary, other generation types result in error
     @Column
-    private long client_id;
-
-    @Column
-    private String first_name;
+    private long clientId;
 
     @Column
-    private String last_name;
+    private String firstName;
 
     @Column
-    private String client_login;
+    private String lastName;
 
     @Column
-    private String client_access_code;
+    private String clientLogin;
 
-    public long getClient_id() {
-        return client_id;
+    @Column
+    private String clientAccessCode;
+
+    public long getClientId() {
+        return clientId;
     }
 
-    public void setClient_id(long client_id) {
-        this.client_id = client_id;
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getClient_login() {
-        return client_login;
+    public String getClientLogin() {
+        return clientLogin;
     }
 
-    public void setClient_login(String client_login) {
-        this.client_login = client_login;
+    public void setClientLogin(String clientLogin) {
+        this.clientLogin = clientLogin;
     }
 
-    public String getClient_access_code() {
-        return client_access_code;
+    public String getClientAccessCode() {
+        return clientAccessCode;
     }
 
-    public void setClient_access_code(String client_access_code) {
-        this.client_access_code = client_access_code;
+    public void setClientAccessCode(String clientAccessCode) {
+        this.clientAccessCode = clientAccessCode;
     }
 }
