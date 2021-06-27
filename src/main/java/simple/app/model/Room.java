@@ -6,30 +6,30 @@ import javax.persistence.*;
 public class Room {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //necessary, other generation types result in error
     @Column
-    private long room_id;
+    private long roomId;
 
     @Column
-    private String room_number;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private RoomType room_type;
+    private String roomNumber;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private RoomStatus room_status;
+    private RoomType roomType;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RoomStatus roomStatus;
 
     @OneToOne
     @JoinColumn(name="client_id")
     private Client client;
 
-    public long getRoom_id(){return room_id;};
-    public void setRoom_id(long room_id){this.room_id = room_id;};
+    public long getRoomId(){return roomId;};
+    public void setRoomId(long roomId){this.roomId = roomId;};
 
-    public String getRoom_number(){return room_number;};
-    public void setRoom_number(String room_number){this.room_number=room_number;};
+    public String getRoomNumber(){return roomNumber;};
+    public void setRoomNumber(String roomNumber){this.roomNumber = roomNumber;};
 
     public Client getClient() {
         return client;
@@ -39,19 +39,19 @@ public class Room {
         this.client = client;
     }
 
-    public RoomType getRoom_type() {
-        return room_type;
+    public RoomType getRoomType() {
+        return roomType;
     }
 
-    public void setRoom_type(RoomType room_type) {
-        this.room_type = room_type;
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
     }
 
-    public RoomStatus getRoom_status() {
-        return room_status;
+    public RoomStatus getRoomStatus() {
+        return roomStatus;
     }
 
-    public void setRoom_status(RoomStatus room_status) {
-        this.room_status = room_status;
+    public void setRoomStatus(RoomStatus roomStatus) {
+        this.roomStatus = roomStatus;
     }
 }

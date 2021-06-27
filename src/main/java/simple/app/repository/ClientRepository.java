@@ -14,4 +14,5 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
     // gets the non-confidential data of employees (no login or access code)
     @Query("SELECT c.clientId as clientId, c.firstName as firstName, c.lastName as lastName FROM Client c")
     List<ClientNonConfidential> getClientsNonConfidential();
+
 }

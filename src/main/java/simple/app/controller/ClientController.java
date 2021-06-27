@@ -30,7 +30,7 @@ public class ClientController {
         }
     }
 
-    @RequestMapping(value="/signup", method = RequestMethod.POST)
+    @PostMapping("/signup")
     @ResponseBody
     public void addClient(@RequestBody Client newClient) {
        if(clientService.getClientByLogin(newClient.getClientLogin()) != null) {

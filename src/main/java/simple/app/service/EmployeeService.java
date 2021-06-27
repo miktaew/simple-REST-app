@@ -48,6 +48,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
+    //validates access for normal employee actions
     public Boolean validateAccess(String login, String accessCode)
     {
         Employee employee = getEmployeeByLogin(login);
@@ -58,6 +59,7 @@ public class EmployeeService {
             return false;
         }
     }
+    //validates access for admin actions
     public Boolean validateAdminAccess(String login, String accessCode)
     {
         Employee employee = getEmployeeByLogin(login);

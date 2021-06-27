@@ -14,7 +14,7 @@ CREATE TABLE rooms (
     room_id INT AUTO_INCREMENT PRIMARY KEY,
     room_number VARCHAR(3) NOT NULL UNIQUE,
     room_type ENUM('NORMAL', 'PREMIUM') NOT NULL,
-    room_status ENUM('EMPTY', 'OCCUPIED') NOT NULL DEFAULT 'EMPTY',
+    room_status ENUM('FREE', 'TAKEN') NOT NULL DEFAULT 'FREE',
     client_id INT,
     FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
