@@ -28,24 +28,24 @@ CREATE TABLE employees (
     is_admin BIT NOT NULL DEFAULT 0
 );
 
-INSERT INTO rooms (room_number, room_type) VALUES
-    ('001', 'NORMAL'),
-    ('002', 'NORMAL'),
-    ('003', 'NORMAL'),
-    ('011', 'PREMIUM'),
-    ('012', 'PREMIUM'),
-    ('013', 'PREMIUM');
-
 INSERT INTO employees (first_name, last_name, employee_login, employee_access_code, is_admin) values
     ('John', 'Smith', 'jsmith', '1234', 1),
     ('Adam', 'Smith', 'asmith', '5678', 0);
-
 
 INSERT INTO clients (first_name, last_name, client_login, client_access_code) values
     ('John', 'Smith', 'jsmithclient', '1234c'),
     ('Adam', 'Smith', 'asmithclient', '5678c');
 
-
+INSERT INTO rooms (room_number, room_type, room_status) VALUES
+    ('001', 'NORMAL', 'FREE'),
+    ('002', 'NORMAL', 'FREE'),
+    ('003', 'NORMAL', 'FREE'),
+    ('004', 'NORMAL', 'TAKEN'),
+    ('011', 'PREMIUM', 'FREE'),
+    ('012', 'PREMIUM', 'FREE'),
+    ('013', 'PREMIUM', 'FREE'),
+    ('014', 'NORMAL', 'TAKEN'),
+    ('015', 'PREMIUM', 'TAKEN');
 
 
 

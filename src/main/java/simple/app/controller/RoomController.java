@@ -27,27 +27,31 @@ public class RoomController {
 
     @GetMapping("/rooms")
     @ResponseBody
-    private List<RoomNoClientId> getRoomsNoClientId(@RequestParam Optional<RoomStatus> roomStatus, @RequestParam Optional<RoomType> roomType) {
-        // todo: special exception message on wrong enum param instead of default?
-        
-        if (roomStatus.isPresent() && roomType.isPresent()) {
-            return roomService.getAllRoomsNoClientIdByStatusByType(roomStatus.get(), roomType.get());
-
-        } else if(roomStatus.isPresent() && roomType.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No such room status or room type possible, " +
-                    "status options are: FREE, TAKEN; type options are NORMAL, PREMIUM");
-
-        } else if(roomStatus.isPresent()) {
-            return roomService.getAllRoomsNoClientIdByStatus(roomStatus.get());
+    private List<RoomNoClientId> getRoomsNoClientId(@RequestParam Optional<String> roomStatus, @RequestParam Optional<String> roomType) {
+        if(roomStatus.isPresent() && roomType.isPresent()) {
+            String status = roomStatus.get();
+            String type = roomType.get();
+            if((status.equals("FREE") || status.equals("TAKEN")) && (type.equals("NORMAL") || type.equals("PREMIUM"))) {
+                return roomService.getAllRoomsNoClientIdByStatusByType(RoomStatus.valueOf(status), RoomType.valueOf(type));
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong status or type. Status has to be FREE or TAKEN, type has to be NORMAL or PREMIUM");
+            }
 
         } else if(roomStatus.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No such room status possible, options are: FREE, TAKEN");
+            String status = roomStatus.get();
+            if(status.equals("FREE") || status.equals("TAKEN")) {
+                return roomService.getAllRoomsNoClientIdByStatus(RoomStatus.valueOf(status));
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong status. Status has to be FREE or TAKEN");
+            }
 
         } else if(roomType.isPresent()) {
-            return roomService.getAllRoomsNoClientIdByType(roomType.get());
-
-        } else if(roomType.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No such room type possible, options are: NORMAL, PREMIUM");
+            String type = roomType.get();
+                if(type.equals("NORMAL") || type.equals("PREMIUM")) {
+                    return roomService.getAllRoomsNoClientIdByType(RoomType.valueOf(type));
+                } else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong type. Type has to be NORMAL or PREMIUM");
+                }
 
         } else {
             return roomService.getAllRoomsNoClientId();
