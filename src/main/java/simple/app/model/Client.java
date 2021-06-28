@@ -60,4 +60,6 @@ public class Client {
     public void setClientAccessCode(String clientAccessCode) {
         this.clientAccessCode = clientAccessCode;
     }
+
+
 }

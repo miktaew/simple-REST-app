@@ -34,18 +34,20 @@ INSERT INTO employees (first_name, last_name, employee_login, employee_access_co
 
 INSERT INTO clients (first_name, last_name, client_login, client_access_code) values
     ('John', 'Smith', 'jsmithclient', '1234c'),
-    ('Adam', 'Smith', 'asmithclient', '5678c');
+    ('Adam', 'Smith', 'asmithclient', '5678c'),
+    ('Joseph', 'Smith', 'josmith', '1234c'),
+    ('Jonathan', 'Smith', 'jnsmith', '5678c');
 
-INSERT INTO rooms (room_number, room_type, room_status) VALUES
-    ('001', 'NORMAL', 'FREE'),
-    ('002', 'NORMAL', 'FREE'),
-    ('003', 'NORMAL', 'FREE'),
-    ('004', 'NORMAL', 'TAKEN'),
-    ('011', 'PREMIUM', 'FREE'),
-    ('012', 'PREMIUM', 'FREE'),
-    ('013', 'PREMIUM', 'FREE'),
-    ('014', 'NORMAL', 'TAKEN'),
-    ('015', 'PREMIUM', 'TAKEN');
+INSERT INTO rooms (room_number, room_type, room_status, client_id) VALUES
+    ('001', 'NORMAL', 'FREE', null),
+    ('002', 'NORMAL', 'FREE', null),
+    ('003', 'NORMAL', 'FREE', null),
+    ('004', 'NORMAL', 'TAKEN', 1),
+    ('011', 'PREMIUM', 'FREE', null),
+    ('012', 'PREMIUM', 'FREE', null),
+    ('013', 'PREMIUM', 'FREE', null),
+    ('014', 'NORMAL', 'TAKEN', 2),
+    ('015', 'PREMIUM', 'TAKEN', 4);
 
 
 
