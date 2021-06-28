@@ -10,6 +10,7 @@ import simple.app.service.ClientService;
 import simple.app.service.EmployeeService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ClientController {
@@ -25,6 +26,24 @@ public class ClientController {
     public List<ClientNonConfidential> getAllClients(@RequestParam String userLogin, @RequestParam String accessCode) {
         if(employeeService.validateAccess(userLogin, accessCode)) {
             return clientService.getAllClientsNonConfidential();
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @GetMapping("/clients/{clientId}")
+    @ResponseBody
+    public ClientNonConfidential getClientById(@PathVariable Long clientId, @RequestParam String userLogin,
+                                               @RequestParam String accessCode) {
+
+        if(employeeService.validateAccess(userLogin, accessCode)) {
+            Optional<ClientNonConfidential> client = clientService.getClientByIdNonConfidential(clientId);
+            if(client.isPresent()) {
+                return client.get();
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }

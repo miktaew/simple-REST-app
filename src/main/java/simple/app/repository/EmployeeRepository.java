@@ -16,7 +16,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     @Query("SELECT e.employeeId as employeeId, e.firstName as firstName, e.lastName as lastName, e.isAdmin as isAdmin FROM Employee e")
     List<EmployeeNonConfidential> getEmployeesNonConfidential();
 
-    @Query("SELECT e.employeeId as employeeId, e.firstName as firstName, e.lastName as lastName, e.isAdmin as isAdmin FROM Employee e WHERE e.id = ?1")
+    @Query("SELECT e.employeeId as employeeId, e.firstName as firstName, e.lastName as lastName, e.isAdmin as isAdmin FROM Employee e WHERE e.employeeId = ?1")
     Optional<EmployeeNonConfidential> getEmployeeByIdNonConfidential(Long id);
     
 }

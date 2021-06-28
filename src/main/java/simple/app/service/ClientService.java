@@ -8,6 +8,7 @@ import simple.app.repository.ClientRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -26,6 +27,10 @@ public class ClientService {
         List<ClientNonConfidential> clients = new ArrayList<>();
         clientRepository.getClientsNonConfidential().forEach(clients::add);
         return clients;
+    }
+
+    public Optional<ClientNonConfidential> getClientByIdNonConfidential(Long clientID) {
+        return clientRepository.getClientByIdNonConfidential(clientID);
     }
 
     public Client getClientByLogin(String login) {

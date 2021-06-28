@@ -6,6 +6,7 @@ import simple.app.misc.ClientNonConfidential;
 import simple.app.model.Client;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
 
@@ -15,4 +16,6 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
     @Query("SELECT c.clientId as clientId, c.firstName as firstName, c.lastName as lastName FROM Client c")
     List<ClientNonConfidential> getClientsNonConfidential();
 
+    @Query("SELECT c.clientId as clientId, c.firstName as firstName, c.lastName as lastName FROM Client c WHERE c.clientId = ?1")
+    Optional<ClientNonConfidential> getClientByIdNonConfidential(Long id);
 }

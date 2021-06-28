@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import simple.app.misc.ClientNonConfidential;
+import simple.app.misc.EmployeeNonConfidential;
 import simple.app.misc.Misc;
 import simple.app.misc.RoomNoClientId;
+import simple.app.model.Client;
 import simple.app.model.Room;
 import simple.app.model.RoomStatus;
 import simple.app.model.RoomType;
+import simple.app.service.ClientService;
 import simple.app.service.EmployeeService;
 import simple.app.service.RoomService;
 
@@ -20,14 +24,15 @@ import java.util.Optional;
 public class RoomController {
     //todo: change room status (free -> booked; booked -> free)
     // /rooms/book/{roomNumber} and /rooms/free/{roomNumber}
-    //todo: get client of specific room (only for employees)
-    // so /rooms/clients/{roomNumber}
 
     @Autowired
     private RoomService roomService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ClientService clientService;
 
+    //get rooms without ids of their clients
     @GetMapping("/rooms")
     @ResponseBody
     private List<RoomNoClientId> getRoomsNoClientId(@RequestParam Optional<String> roomStatus, @RequestParam Optional<String> roomType) {
@@ -61,9 +66,10 @@ public class RoomController {
         }
     }
 
+    //gets rooms with ids of their clients (employee access required)
     @GetMapping("/rooms/clients")
     @ResponseBody
-    private List<HashMap<String,Object>> getRoomsWithClients(@RequestParam Optional<String> roomStatus, @RequestParam Optional<String> roomType,
+    private List<HashMap<String,Object>> getRoomsWithClientsIds(@RequestParam Optional<String> roomStatus, @RequestParam Optional<String> roomType,
                                                              @RequestParam String userLogin, @RequestParam String accessCode) {
 
         if(!employeeService.validateAccess(userLogin, accessCode)) {
@@ -98,6 +104,24 @@ public class RoomController {
         } else {
             return Misc.roomToMap(roomService.getAllRooms());
         }
+    }
+
+    //get client of specific room
+    @GetMapping("/rooms/clients/{roomNumber}")
+    @ResponseBody
+    public ClientNonConfidential getRoomClient(@PathVariable String roomNumber, @RequestParam String userLogin,
+                                               @RequestParam String accessCode) {
+        if(employeeService.validateAccess(userLogin, accessCode)) {
+            Optional<ClientNonConfidential> result = roomService.getClientOfRoom(roomNumber);
+            if (result.isPresent()) {
+                return result.get();
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
     }
 
 }

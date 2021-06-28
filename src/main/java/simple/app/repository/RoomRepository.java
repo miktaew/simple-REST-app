@@ -2,12 +2,15 @@ package simple.app.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import simple.app.misc.ClientNonConfidential;
 import simple.app.misc.RoomNoClientId;
+import simple.app.model.Client;
 import simple.app.model.Room;
 import simple.app.model.RoomStatus;
 import simple.app.model.RoomType;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoomRepository extends CrudRepository<Room, Long> {
 
@@ -37,4 +40,7 @@ public interface RoomRepository extends CrudRepository<Room, Long> {
 
     @Query("SELECT r FROM Room r WHERE r.roomStatus = ?1 AND r.roomType = ?2")
     List<Room> getRoomsByStatusByType(RoomStatus roomStatus, RoomType roomType);
+
+    @Query("SELECT r.client.clientId as clientId, r.client.firstName as firstName, r.client.lastName as lastName FROM Room r WHERE r.roomNumber = ?1")
+    Optional<ClientNonConfidential> getClientOfRoom(String roomNumber);
 }

@@ -31,11 +31,11 @@ public class EmployeeController {
     }
 
     //gets employee by id (without login or access code)
-    @GetMapping("/employees/{id}")
+    @GetMapping("/employees/{employeeId}")
     @ResponseBody
-    private EmployeeNonConfidential getEmployee(@RequestParam String userLogin, @RequestParam String accessCode, @PathVariable Long id) {
+    private EmployeeNonConfidential getEmployeeById(@RequestParam String userLogin, @RequestParam String accessCode, @PathVariable Long employeeId) {
         if(employeeService.validateAccess(userLogin, accessCode)) {
-            Optional<EmployeeNonConfidential> result = employeeService.getEmployeeByIdNonConfidential(id);
+            Optional<EmployeeNonConfidential> result = employeeService.getEmployeeByIdNonConfidential(employeeId);
             if (result.isPresent()) {
                 return result.get();
             } else {
