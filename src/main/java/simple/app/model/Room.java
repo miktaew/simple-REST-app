@@ -17,6 +17,7 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
+    //kinda pointless, could just check if there's any client assigned
     @Column
     @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus;

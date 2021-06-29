@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import simple.app.misc.ClientNonConfidential;
-import simple.app.misc.EmployeeNonConfidential;
 import simple.app.misc.Misc;
 import simple.app.misc.RoomNoClientId;
-import simple.app.model.Client;
 import simple.app.model.Room;
 import simple.app.model.RoomStatus;
 import simple.app.model.RoomType;
@@ -22,8 +20,7 @@ import java.util.Optional;
 
 @RestController
 public class RoomController {
-    //todo: change room status (free -> booked; booked -> free)
-    // /rooms/book/{roomNumber} and /rooms/free/{roomNumber}
+    //todo: add room?
 
     @Autowired
     private RoomService roomService;
@@ -124,4 +121,55 @@ public class RoomController {
 
     }
 
+    @PutMapping("/rooms/book/{roomNumber}")
+    public String bookRoomByNumber(@PathVariable String roomNumber, @RequestParam String userLogin,
+                             @RequestParam String accessCode) {
+        if(clientService.validateAccess(userLogin, accessCode)) {
+            Optional<Room> roomTemp = roomService.getRoomByRoomNumber(roomNumber);
+            if (roomTemp.isPresent()) {
+                Room room = roomTemp.get();
+                if(room.getRoomStatus().toString().equals("FREE"))
+                {
+                    room.setRoomStatus(RoomStatus.TAKEN);
+                    room.setClient(clientService.getClientByLogin(userLogin));
+                    roomService.changeRoomStatusToTaken(room.getRoomNumber(), clientService.getClientByLogin(userLogin));
+                }
+                else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room is already taken.");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        return null;
+    }
+
+    @PutMapping("/rooms/free/{roomNumber}")
+    public String freeRoomByNumber(@PathVariable String roomNumber, @RequestParam String userLogin,
+                                   @RequestParam String accessCode) {
+        if(employeeService.validateAccess(userLogin, accessCode)) {
+            Optional<Room> roomTemp = roomService.getRoomByRoomNumber(roomNumber);
+            if (roomTemp.isPresent()) {
+                Room room = roomTemp.get();
+                if(room.getRoomStatus().toString().equals("TAKEN"))
+                {
+                    room.setRoomStatus(RoomStatus.FREE);
+                    room.setClient(null);
+                    roomService.changeRoomStatusToFree(room.getRoomNumber());
+                }
+                else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room is already free.");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        return null;
+    }
 }

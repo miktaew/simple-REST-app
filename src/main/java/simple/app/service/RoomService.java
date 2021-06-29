@@ -3,7 +3,6 @@ package simple.app.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import simple.app.misc.ClientNonConfidential;
-import simple.app.misc.Misc;
 import simple.app.misc.RoomNoClientId;
 import simple.app.model.Client;
 import simple.app.model.Room;
@@ -11,7 +10,6 @@ import simple.app.model.RoomStatus;
 import simple.app.model.RoomType;
 import simple.app.repository.RoomRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +23,7 @@ public class RoomService {
     private RoomRepository roomRepository;
 
 
-    //getting without id:
+    //getting without client id:
     public List<RoomNoClientId> getAllRoomsNoClientId()
     {
         return roomRepository.getRoomsNoClientId();
@@ -46,7 +44,7 @@ public class RoomService {
         return roomRepository.getRoomsNoClientIdByStatusByType(roomStatus, roomType);
     }
 
-    //getting with id:
+    //getting with client id:
     public List<Room> getAllRooms()
     {
         return roomRepository.getRooms();
@@ -70,9 +68,22 @@ public class RoomService {
         return roomRepository.getClientOfRoom(roomNumber);
     }
 
+    //
+
+    public Optional<Room> getRoomByRoomNumber(String roomNumber) {
+        return roomRepository.getRoomByRoomNumber(roomNumber);
+    }
+
     public void AddRoom(Room room)
     {
         roomRepository.save(room);
+    }
+
+    public void changeRoomStatusToTaken(String roomNumber, Client client) {
+        roomRepository.changeRoomStatusToTaken(client, roomNumber);
+    }
+    public void changeRoomStatusToFree(String roomNumber) {
+        roomRepository.changeRoomStatusToFree(roomNumber);
     }
 
 }

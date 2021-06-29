@@ -1,5 +1,6 @@
 package simple.app.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import simple.app.misc.ClientNonConfidential;
@@ -9,6 +10,7 @@ import simple.app.model.Room;
 import simple.app.model.RoomStatus;
 import simple.app.model.RoomType;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,7 @@ public interface RoomRepository extends CrudRepository<Room, Long> {
     List<RoomNoClientId> getRoomsNoClientIdByStatusByType(RoomStatus roomStatus, RoomType roomType);
 
 
+
     //with client:
     @Query("SELECT r FROM Room r")
     List<Room> getRooms();
@@ -43,4 +46,19 @@ public interface RoomRepository extends CrudRepository<Room, Long> {
 
     @Query("SELECT r.client.clientId as clientId, r.client.firstName as firstName, r.client.lastName as lastName FROM Room r WHERE r.roomNumber = ?1")
     Optional<ClientNonConfidential> getClientOfRoom(String roomNumber);
+
+    @Query("SELECT r FROM Room r WHERE r.roomNumber = ?1")
+    Optional<Room> getRoomByRoomNumber(String roomNumber);
+
+    //
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Room r SET r.roomStatus = 'TAKEN', r.client = ?1 WHERE r.roomNumber = ?2")
+    void changeRoomStatusToTaken(Client client, String roomNumber);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Room r SET r.roomStatus = 'FREE', r.client = null WHERE r.roomNumber = ?1")
+    void changeRoomStatusToFree(String roomNumber);
 }

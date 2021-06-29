@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import simple.app.misc.ClientNonConfidential;
 import simple.app.model.Client;
+import simple.app.model.Employee;
 import simple.app.repository.ClientRepository;
 
 import java.util.ArrayList;
@@ -40,5 +41,17 @@ public class ClientService {
     public void AddClient(Client client)
     {
         clientRepository.save(client);
+    }
+
+    //validates access for client actions
+    public Boolean validateAccess(String login, String accessCode)
+    {
+        Client client = getClientByLogin(login);
+        if(client != null && client.getClientAccessCode().equals(accessCode))
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
